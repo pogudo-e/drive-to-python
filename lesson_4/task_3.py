@@ -1,5 +1,25 @@
 cash = 0
-operation_count = 0
+operation_count = 1
+operations = {}
+
+
+def operations_in_list(sum_operation: int, operation: str) -> None:
+    """
+    Добавляет в список историю транзакций
+    :param sum_operation: Сумма транзакции
+    :param operation: Название операции (снятие или пополнение)
+    :return:
+    """
+    operations[operation_count] = [operation, sum_operation]
+
+
+def show_operations_list():
+    """
+    Выводит на экран историю транзакций
+    :return:
+    """
+    for key, value in operations.items():
+        print(key, ':', *value)
 
 
 def check_operation_count() -> None:
@@ -60,6 +80,7 @@ def up_cash() -> None:
             continue
         else:
             cash = cash + value
+            operations_in_list(value, 'Пополнение')
             break
     check_operation_count()
 
@@ -93,6 +114,7 @@ def get_cash() -> None:
                 print(f"Недостаточно средств. Введите сумму, меньше {cash + percent} (с учетом налогов).\n")
             else:
                 cash = cash - value - percent
+                operations_in_list(value, 'Снятие')
                 break
     check_operation_count()
 
@@ -116,14 +138,17 @@ def run():
     Основная часть программы.
     """
     while True:
-        choice = input("Выберите действие:\n1. Пополнить счет\n2. Снять наличные\n3. Проверить баланс\n"
-                       "0. Завершить программу\n")
+        choice = input(
+            "Выберите действие:\n1. Пополнить счет\n2. Снять наличные\n3. Проверить баланс\n4. История транзакций\n"
+            "0. Завершить программу\n")
         if choice == "1":
             up_cash()
         elif choice == "2":
             get_cash()
         elif choice == "3":
             show_balance()
+        elif choice == "4":
+            show_operations_list()
         elif choice == "0":
             close_program()
         else:
